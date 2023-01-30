@@ -16,6 +16,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(orphanRemoval = true, mappedBy = "subject")

@@ -16,6 +16,9 @@ public class Keyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false)
+    private String name;
+
     @OneToMany(orphanRemoval = true,
             fetch = FetchType.LAZY,
     mappedBy = "keyword")
