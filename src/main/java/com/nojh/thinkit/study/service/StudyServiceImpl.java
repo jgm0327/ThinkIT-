@@ -4,7 +4,6 @@ import com.nojh.thinkit.study.dto.ProblemDTO;
 import com.nojh.thinkit.study.entity.Keyword;
 import com.nojh.thinkit.study.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +20,9 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public List<String> getKeywords(String subject_name) {
         int subject_id = subjectRepository.findByName(subject_name).orElseThrow().getId();
-        return keywordRepository
-                .findAllBySubject_Id(subject_id)
-                .stream().map(Keyword::getName).toList();
+        return keywordRepository.findAllBySubject_Id(subject_id)
+                .stream()
+                .map(Keyword::getName).toList();
     }
 
     @Override
