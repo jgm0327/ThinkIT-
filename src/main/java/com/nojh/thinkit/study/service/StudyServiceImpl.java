@@ -27,7 +27,8 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public String getConcept(String keyword_name) {
-        return null;
+        int keyword_id = keywordRepository.findByName(keyword_name).getId();
+        return conceptRepository.findByKeyword_Id(keyword_id).getContent();
     }
 
     @Override
