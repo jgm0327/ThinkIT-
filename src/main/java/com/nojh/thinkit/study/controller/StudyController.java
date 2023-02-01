@@ -23,9 +23,10 @@ public class StudyController {
         return ResponseEntity.ok(Map.of("keywords", keywords));
     }
 
-    @GetMapping("/concepts/{keyword}")
-    public ResponseEntity<Map<String, String>> sendConcept(@PathVariable("keyword") List<String> subjects) {
-        return ResponseEntity.ok(Map.of("result", "success"));
+    @GetMapping(value = "/concepts/{keyword}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, String>> sendConcept(@PathVariable("keyword") String keyword) {
+        String concept = studyService.getConcept(keyword);
+        return ResponseEntity.ok(Map.of("keyword_concept", concept));
     }
 
     @GetMapping("/problems")
