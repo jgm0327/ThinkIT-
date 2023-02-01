@@ -1,11 +1,14 @@
 package com.nojh.thinkit.study.service;
 
+import com.nojh.thinkit.study.dto.ProblemDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,5 +31,13 @@ class StudyServiceImplTests {
         String result = studyService.getConcept("힙");
         assertNotNull(result);
         log.info(result);
+    }
+
+    @Test
+    @DisplayName("객관식 문제 받아오기")
+    void testGETProblems(){
+        ProblemDTO problemDTO = studyService.getProblems(List.of("자료구조", "알고리즘"));
+        problemDTO.getTitles().forEach(log::info);
+        problemDTO.getSelects().forEach(log::info);
     }
 }
