@@ -1,5 +1,6 @@
 package com.nojh.thinkit.study.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProblemDTO {
+    @JsonProperty(value = "problems")
     private List<String> titles;
     private List<String> selects;
 }
