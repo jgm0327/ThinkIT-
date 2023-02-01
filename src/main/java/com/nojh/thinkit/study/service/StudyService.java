@@ -10,5 +10,5 @@ public interface StudyService {
 
     ProblemDTO getProblems(List<String> subjects);
 
-    List<String> getInterviewProblems(String interview_name);
+    List<String> getInterviewProblems(List<String> interview_name);
 }

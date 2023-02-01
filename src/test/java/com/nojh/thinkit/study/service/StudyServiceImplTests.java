@@ -40,4 +40,10 @@ class StudyServiceImplTests {
         problemDTO.getTitles().forEach(log::info);
         problemDTO.getSelects().forEach(log::info);
     }
+
+    @Test
+    @DisplayName("면접 문제 받아오기")
+    void testGETInterviews(){
+        studyService.getInterviewProblems(List.of("인성", "CS")).forEach(log::info);
+    }
 }

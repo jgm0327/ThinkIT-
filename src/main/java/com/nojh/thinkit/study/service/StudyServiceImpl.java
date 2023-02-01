@@ -2,7 +2,6 @@ package com.nojh.thinkit.study.service;
 
 import com.nojh.thinkit.study.dto.ProblemDTO;
 import com.nojh.thinkit.study.entity.Keyword;
-import com.nojh.thinkit.study.entity.Problem;
 import com.nojh.thinkit.study.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,15 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public List<String> getInterviewProblems(String interview_name) {
-        return null;
+    public List<String> getInterviewProblems(List<String> subjects) {
+        List<String> problems = new ArrayList<>();
+        int per_cnt = (10 / subjects.size()) + 1;
+        subjects.forEach(subject ->{
+            int id = subjectRepository.findByName(subject).orElseThrow().getId();
+            interviewRepository.getInterviewsBySubjectId(id, per_cnt).forEach(interview -> {
+                problems.add(interview.getProblems());
+            });
+        });
+        return problems;
     }
 }
