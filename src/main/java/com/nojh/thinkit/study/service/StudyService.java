@@ -8,7 +8,7 @@ public interface StudyService {
     List<String> getKeywords(String subject_name);
     String getConcept(String keyword_name);
 
-    ProblemDTO getProblems(String problem_name);
+    ProblemDTO getProblems(List<String> subjects);
 
     List<String> getInterviewProblems(String interview_name);
 }
