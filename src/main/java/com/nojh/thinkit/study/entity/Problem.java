@@ -1,7 +1,10 @@
 package com.nojh.thinkit.study.entity;
 
+import com.nojh.thinkit.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Builder
@@ -20,6 +23,10 @@ public class Problem {
     @Column(nullable = false)
     private String selection;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Subject subject;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> users;
 }
