@@ -1,5 +1,6 @@
 package com.nojh.thinkit.study.controller;
 
+import com.nojh.thinkit.study.dto.ProblemDTO;
 import com.nojh.thinkit.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,12 +31,14 @@ public class StudyController {
     }
 
     @GetMapping("/problems")
-    public ResponseEntity<Map<String, List<String>>> sendProblems(@RequestParam("subjects") List<String> subjects) {
-        return ResponseEntity.ok(Map.of("result", List.of("success")));
+    public ResponseEntity<ProblemDTO> sendProblems(@RequestParam("subjects") List<String> subjects) {
+        ProblemDTO problemDTO = studyService.getProblems(subjects);
+        return ResponseEntity.ok(problemDTO);
     }
 
     @GetMapping("/interviews")
     public ResponseEntity<Map<String, List<String>>> sendKeywords(@RequestParam("subjects") List<String> subjects) {
-        return ResponseEntity.ok(Map.of("result", List.of("success")));
+        List<String> problems = studyService.getInterviewProblems(subjects);
+        return ResponseEntity.ok(Map.of("problmes", problems));
     }
 }
