@@ -1,6 +1,5 @@
 package com.nojh.thinkit.auth.entity;
 
-import com.nojh.thinkit.study.entity.Concept;
 import com.nojh.thinkit.study.entity.Interview;
 import com.nojh.thinkit.study.entity.Keyword;
 import com.nojh.thinkit.study.entity.Problem;
@@ -11,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
