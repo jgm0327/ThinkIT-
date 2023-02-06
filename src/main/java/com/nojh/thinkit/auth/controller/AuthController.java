@@ -24,13 +24,14 @@ public class AuthController {
     @PreAuthorize("permitAll")
     @PostMapping(value = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> join(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(Map.of("result", "fail"));
         }
-        if(joinService.join(userDTO) == -1){
+        if (joinService.join(userDTO) == -1) {
             return ResponseEntity.badRequest().body(Map.of("result", "exist"));
         }
         log.info(userDTO);
         return ResponseEntity.ok(Map.of("result", "success"));
     }
+
 }
