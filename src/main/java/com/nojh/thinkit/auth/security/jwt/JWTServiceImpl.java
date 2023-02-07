@@ -23,11 +23,15 @@ public class JWTServiceImpl implements JWTService {
     @Override
     public Map<String, Object> validateToken(String token) throws JwtException {
         log.info(token);
-        return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY.getBytes())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(SECRET_KEY.getBytes())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        }catch (IllegalArgumentException e){
+            return null;
+        }
     }
 
     @Override

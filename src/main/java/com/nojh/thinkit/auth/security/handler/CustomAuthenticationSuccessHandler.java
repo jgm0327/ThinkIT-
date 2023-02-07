@@ -22,6 +22,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                                         Authentication authentication) throws IOException, ServletException {
         Map<String, Object> claim = Map.of("username", authentication.getName());
         String accessToken = jwtService.generateToken(claim, 3);
-        response.setHeader("accessToken", accessToken);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> value = Map.of("accessToken", accessToken);
+        String sendToken = objectMapper.writeValueAsString(value);
+        response.getWriter().println(sendToken);
     }
 }
