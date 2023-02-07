@@ -19,8 +19,6 @@
 
   <meta name="theme-color" content="#712cf9">
 
-  <link href="cheatsheet.css" rel="stylesheet">
-
   <style>
     header {
       width: 100%;
@@ -41,12 +39,12 @@
 </head>
 <header class="bd-header bg-dark py-3 d-flex border-bottom border-dark">
   <div class="container-fluid d-flex align-items-center title">
-    <h2 class="d-flex align-items-sm-end text-white mb-0">[[${keyword}]]</h2>
+    <!--<h2 class="d-flex align-items-sm-end text-white mb-0">[[${keyword}]]</h2>-->
   </div>
 </header>
 <body>
   <div th:each="concept: ${concepts}" class="content">
-    <span th:text="${concept}"></span>
+    <span th:text="${concept}"></span><span>.</span>
   </div>
 
 </body>
