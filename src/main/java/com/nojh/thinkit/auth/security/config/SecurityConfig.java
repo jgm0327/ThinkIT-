@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,14 +27,16 @@ public class SecurityConfig {
     private final JWTService jwtService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //AuthenticationManager 생성하기
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                        .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder());
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         http.authenticationManager(authenticationManager);
 
+        // 커스텀한 인증 필터 생성
         CustomAuthenticationFilter customAuthentication = new CustomAuthenticationFilter("/login/**");
         customAuthentication.setAuthenticationManager(authenticationManager);
         customAuthentication.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(jwtService));
@@ -55,11 +56,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    private JWTFilter jwtFilter(JWTService jwtService, CustomUserDetailsService userDetailsService){
+    private JWTFilter jwtFilter(JWTService jwtService, CustomUserDetailsService userDetailsService) {
         return new JWTFilter(jwtService, userDetailsService);
     }
 }
