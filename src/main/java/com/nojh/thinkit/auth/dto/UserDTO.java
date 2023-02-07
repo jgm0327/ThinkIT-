@@ -20,17 +20,17 @@ import java.util.Collections;
 public class UserDTO implements UserDetails {
 
     @NotNull
-    @Size(min = 8, max = 20, message = "8~20 글자로 해주세요")
+    @Size(min = 8, max = 20, message = "아이디는 8~20 글자로 해주세요")
     private String username;
 
     @NotNull
-    @Size(min = 8, max = 20, message = "8~20 글자로 해주세요")
+    @Size(min = 8, max = 20, message = "비밀번호는 8~20 글자로 해주세요")
     private String password;
 
     private String authority;
 
     @NotNull
-    @Size(min = 3, max = 20, message = "3~20 글자로 해주세요")
+    @Size(min = 3, max = 20, message = "닉네임은 3~20 글자로 해주세요")
     private String nickname;
 
     @Builder.Default
