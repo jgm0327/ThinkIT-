@@ -19,12 +19,13 @@ public class StudyViewController {
 
     private final StudyService studyService;
 
-    @GetMapping("/view/concepts")
-    public void getViewConcepts(@RequestParam("keyword") String keyword, Model model){
+    @GetMapping("/view/concepts/{keyword}")
+    public String getViewConcepts(@PathVariable("keyword") String keyword, Model model){
         log.info(keyword);
         String result = studyService.getConcept(keyword);
         List<String> concepts = Arrays.asList(result.split("\\."));
         model.addAttribute("keyword", keyword);
         model.addAttribute("concepts", concepts);
+        return "/view/concepts";
     }
 }
