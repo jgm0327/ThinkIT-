@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/mypage")
+@RequestMapping("/auth/mypage")
 public class MyPageController {
     @GetMapping
     public ResponseEntity<String> info() {
