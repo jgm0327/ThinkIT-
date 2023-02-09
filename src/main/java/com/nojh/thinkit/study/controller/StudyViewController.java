@@ -26,6 +26,6 @@ public class StudyViewController {
         List<String> concepts = Arrays.asList(result.split("\\."));
         model.addAttribute("keyword", keyword);
         model.addAttribute("concepts", concepts);
-        return "/view/concepts";
+        return "view/concepts";
     }
 }
