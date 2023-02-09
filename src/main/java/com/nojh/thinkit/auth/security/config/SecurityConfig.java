@@ -1,7 +1,9 @@
 package com.nojh.thinkit.auth.security.config;
 
+import com.nojh.thinkit.auth.repository.UserRepository;
 import com.nojh.thinkit.auth.security.filter.CustomAuthenticationFilter;
 import com.nojh.thinkit.auth.security.filter.JWTFilter;
+import com.nojh.thinkit.auth.security.handler.CustomAuthenticationFailureHandler;
 import com.nojh.thinkit.auth.security.handler.CustomAuthenticationSuccessHandler;
 import com.nojh.thinkit.auth.security.jwt.JWTService;
 import com.nojh.thinkit.auth.service.CustomUserDetailsService;
@@ -27,6 +29,7 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JWTService jwtService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,10 +52,13 @@ public class SecurityConfig {
         CustomAuthenticationFilter customAuthentication =
                 new CustomAuthenticationFilter("/login/**");
         customAuthentication.setAuthenticationManager(authenticationManager);
-        customAuthentication.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(jwtService));
+        customAuthentication.setAuthenticationSuccessHandler(
+                new CustomAuthenticationSuccessHandler(jwtService, userRepository));
+        customAuthentication.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
         http.addFilterBefore(customAuthentication, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(jwtFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter(jwtService, userDetailsService),
+                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
