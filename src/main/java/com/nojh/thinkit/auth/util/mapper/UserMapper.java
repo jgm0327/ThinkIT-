@@ -25,9 +25,6 @@ public interface UserMapper {
     @Mapping(source = "regDate", target = "regDate")
     @Mapping(source = "enabled", target = "enabled")
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "keyword_favorites", ignore = true)
-    @Mapping(target = "interview_favorites", ignore = true)
-    @Mapping(target = "problem", ignore = true)
     User userDTOToUser(UserDTO userDTO);
 
 }

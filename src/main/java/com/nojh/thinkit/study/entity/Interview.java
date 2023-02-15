@@ -24,7 +24,4 @@ public class Interview {
     @JoinColumn(nullable = false)
     private Subject subject;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<User> users;
-
 }

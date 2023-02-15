@@ -1,5 +1,6 @@
 package com.nojh.thinkit.auth.entity;
 
+import com.nojh.thinkit.favorites.Entity.Keyword_users;
 import com.nojh.thinkit.study.entity.Interview;
 import com.nojh.thinkit.study.entity.Keyword;
 import com.nojh.thinkit.study.entity.Problem;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,15 +38,9 @@ public class User {
     @Column(nullable = false, length = 10)
     private String authority;
 
-    @ManyToOne(targetEntity = Keyword.class)
-    private Keyword keyword_favorites;
-
-    @ManyToOne(targetEntity = Interview.class)
-    private Interview interview_favorites;
-
-    @ManyToOne(targetEntity = Problem.class)
-    private Problem problem;
-
     @Column(nullable = false, updatable = false)
     private LocalDate regDate;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    private List<Keyword_users> keywordUsers;
 }
