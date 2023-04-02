@@ -27,6 +27,4 @@ public class Problem {
     @JoinColumn(nullable = false)
     private Subject subject;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<User> users;
 }

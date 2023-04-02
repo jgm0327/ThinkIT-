@@ -1,6 +1,7 @@
 package com.nojh.thinkit.study.entity;
 
 import com.nojh.thinkit.auth.entity.User;
+import com.nojh.thinkit.favorites.Entity.Keyword_users;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,6 @@ public class Keyword {
     @JoinColumn(nullable = false)
     private Subject subject;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<User> users;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "keyword" , orphanRemoval = true)
+    private List<Keyword_users> keywordUsers;
 }
