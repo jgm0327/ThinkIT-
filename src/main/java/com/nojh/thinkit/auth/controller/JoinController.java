@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -18,13 +19,13 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @Log4j2
-public class AuthController {
+public class JoinController {
     private final JoinService joinService;
 
     @PreAuthorize("permitAll")
     @PostMapping(value = "/join", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> join(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
-        // 회원가입 정보가 정해진 규칙을 따르지 않으면 fail과 error 내용 전달
+        // 회원가입 정보가 정해진 규칙을 따르지 않으면 fail
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(Map.of("result", "fail"));
         }

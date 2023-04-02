@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ProblemRepository extends JpaRepository<Problem, Integer> {
-    @Query(value = "select * from problem where subject_id = :id order by rand() limit :cnt", nativeQuery = true)
+    @Query(value = "select * from Problem where subject_id = :id order by rand() limit :cnt", nativeQuery = true)
     List<Problem> findBySubject_Id(int id, int cnt);
 }

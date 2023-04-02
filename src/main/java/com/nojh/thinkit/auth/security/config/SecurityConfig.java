@@ -1,11 +1,14 @@
 package com.nojh.thinkit.auth.security.config;
 
+import com.nojh.thinkit.auth.repository.UserRepository;
 import com.nojh.thinkit.auth.security.filter.CustomAuthenticationFilter;
 import com.nojh.thinkit.auth.security.filter.JWTFilter;
+import com.nojh.thinkit.auth.security.handler.CustomAuthenticationFailureHandler;
 import com.nojh.thinkit.auth.security.handler.CustomAuthenticationSuccessHandler;
 import com.nojh.thinkit.auth.security.jwt.JWTService;
 import com.nojh.thinkit.auth.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,11 +23,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
+@Log4j2
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final JWTService jwtService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,11 +41,6 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         http.authenticationManager(authenticationManager);
 
-        // 커스텀한 인증 필터 생성
-        CustomAuthenticationFilter customAuthentication = new CustomAuthenticationFilter("/login/**");
-        customAuthentication.setAuthenticationManager(authenticationManager);
-        customAuthentication.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler(jwtService));
-
         http.httpBasic().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests(auth -> {
@@ -48,10 +48,18 @@ public class SecurityConfig {
             auth.requestMatchers("/**").permitAll();
         });
 
-        http.addFilterBefore(customAuthentication,
-                UsernamePasswordAuthenticationFilter.class);
+        // 커스텀한 인증 필터 생성
+        CustomAuthenticationFilter customAuthentication =
+                new CustomAuthenticationFilter("/login/**");
+        customAuthentication.setAuthenticationManager(authenticationManager);
+        customAuthentication.setAuthenticationSuccessHandler(
+                new CustomAuthenticationSuccessHandler(jwtService, userRepository));
+        customAuthentication.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
+
+        http.addFilterBefore(customAuthentication, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtFilter(jwtService, userDetailsService),
                 UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -60,7 +68,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     private JWTFilter jwtFilter(JWTService jwtService, CustomUserDetailsService userDetailsService) {
         return new JWTFilter(jwtService, userDetailsService);
     }
+
 }

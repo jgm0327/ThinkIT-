@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.mapstruct.ap.shaded.freemarker.template.utility.NullArgumentException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +23,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Map;
 
+
 @RequiredArgsConstructor
 @Log4j2
+
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final CustomUserDetailsService userDetailsService;
@@ -34,7 +35,10 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if(request.getInputStream().isFinished()){
+
+
+        if (!request.getRequestURI().startsWith("/auth") && !request.getRequestURI().startsWith("/login")) {
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -49,11 +53,14 @@ public class JWTFilter extends OncePerRequestFilter {
                             userDetails.getAuthorities()
                     );
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        filterChain.doFilter(request, response);
     }
+
 
     private Map<String, Object> validate(HttpServletRequest request) throws Exception {
         Map<String, Object> jwt = parseRequest(request);
@@ -65,8 +72,9 @@ public class JWTFilter extends OncePerRequestFilter {
             throw new UnsupportedJwtException("형식 싫음");
         } catch (ExpiredJwtException e) {
             throw new JwtException("기간 끝남");
-        } catch (NullArgumentException e) {
-            throw new Exception("값이 없음");
+
+        } catch (NullPointerException e) {
+            throw new NullPointerException("없음");
         }
     }
 
