@@ -1,5 +1,6 @@
 package com.nojh.thinkit.study.entity;
 
+import com.nojh.thinkit.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,9 +22,13 @@ public class Keyword {
 
     @OneToMany(orphanRemoval = true,
             fetch = FetchType.LAZY,
-    mappedBy = "keyword")
+            mappedBy = "keyword")
     private List<Concept> concepts;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Subject subject;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<User> users;
 }

@@ -16,16 +16,16 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "subject")
+    @OneToMany(orphanRemoval = true, mappedBy = "subject", fetch = FetchType.LAZY)
     private List<Interview> interviews;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "subject")
+    @OneToMany(orphanRemoval = true, mappedBy = "subject", fetch = FetchType.LAZY)
     private List<Keyword> keywords;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "subject")
+    @OneToMany(orphanRemoval = true, mappedBy = "subject", fetch = FetchType.LAZY)
     private List<Problem> problems;
 
 
